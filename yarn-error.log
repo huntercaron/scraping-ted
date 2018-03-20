@@ -1,0 +1,47 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add puppeteer
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\Users\hunte_000\AppData\Local\atom\bin;C:\Users\hunte_000\AppData\Roaming\npm;C:\Users\hunte_000\AppData\Local\Microsoft\WindowsApps;C:\Users\hunte_000\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  5.9.0
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "name": "scraping-ted",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Found incompatible module
+      at MessageError.Error (native)
+      at new MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
+      at checkOne (C:\Program Files (x86)\Yarn\lib\cli.js:62444:11)
+      at Object.check (C:\Program Files (x86)\Yarn\lib\cli.js:62463:5)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:22803:73
+      at next (native)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:109:13
+      at run (C:\Program Files (x86)\Yarn\lib\cli.js:100334:22)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:100347:28
