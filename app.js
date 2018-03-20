@@ -1,9 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-const index = 10;
-
-(async () => {
+async function scrapeTed(index) {
   const browser = await puppeteer.launch({ executablePath: '../Chrome/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'});
   const page = await browser.newPage();
   await page.goto(`http://www.ted.com/talks/view/id/${index}`, { waitUntil: 'networkidle0'});
@@ -30,7 +28,7 @@ const index = 10;
   await page.goto(url + "/transcript")
   await page.waitForSelector(transcriptSelector)
 
-  const transcript = {
+  const talk = {
     index: index,
     speakerInfo: speakerInfo,
     transcript: [],
@@ -47,32 +45,45 @@ const index = 10;
     });
   }, transcriptSelector);
 
-  transcript.transcript = links;
+  talk.transcript = links;
   
   // fs.writeFile('data.json', JSON.stringify([transcript]), 'utf8', () => {});
 
+  await browser.close();
+
+  return new Promise(resolve => { resolve(talk) });
+};
+
+
+const talkCount = 4;
+
+(async () => {
+
+  let allData = [];
+
+  for (let i = 1; i <= 30; i++) {
+    let talkData = await scrapeTed(i);
+    allData.push(talkData)
+  }
+
+  for (let t in allData) {
+    console.log(allData[t].speakerInfo.speakerName);
+  }
+  
   fs.readFile('data.json', 'utf8', (err, data) => {
     if (err) {
       console.log(err);
     } else {
       let obj = JSON.parse(data);
-      
-      let foundIndex = obj.findIndex((ele) => {
-        return ele.index == index;
-      });
 
-      if (foundIndex >= 0) {
-        obj[foundIndex] = transcript;
-      } else {
-        obj.push(transcript);
-      }
-      
+      obj.push(allData);
+
       json = JSON.stringify(obj);
       fs.writeFile('data.json', json, 'utf8', () => {
         console.log("Wrote to file");
       }); // write it back 
     }
   });
-
-  await browser.close();
 })();
+
+
