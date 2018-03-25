@@ -53,27 +53,27 @@ async function scrapeTed(index, browser) {
     // fs.writeFile('data.json', JSON.stringify([transcript]), 'utf8', () => {});
 
     await page.close();
-    console.log(talk.speakerInfo.speakerName)
+    // console.log(talk.speakerInfo.speakerName)
     return new Promise(resolve => { resolve(talk); });
 
   } catch (e) {
-    console.log(e);
-    return new Promise(reject => { reject({}); });
+    // console.log(e);
+    return new Promise(reject => { reject(); });
   }
   
 };
 
 
-const talkCount = 4;
-
 async function scrapeMultiple(startIndex, browser) {
   let promises = [];
 
-  for (let i = startIndex; i <= startIndex+scrapeSize; i++) {
+  for (let i = startIndex; i < startIndex+scrapeSize; i++) {
     promises.push(scrapeTed(i, browser));
   }
 
   const allData = await Promise.all(promises);
+  // console.log(allData);
+  
 
   return new Promise(resolve => { resolve(allData) })
 }
@@ -81,46 +81,23 @@ async function scrapeMultiple(startIndex, browser) {
 
 
 (async () => {
-  for (let i = 1; i <= 21; i+=scrapeSize) {
+  for (let i = 1; i <= 2898; i+=scrapeSize) {
     const browser = await puppeteer.launch({
       executablePath: '../Chrome/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
       timeout: 100000,
       args: ['--disable-timeouts-for-profiling']
     });
 
-    console.log("hey")
+    // console.log("hey")
     let newData = await scrapeMultiple(i, browser);
     // console.log(allData);
 
     await browser.close();
-    
-    // for (let talk of allData) {
-    //   console.log()
-    //   if (talk.hasOwnProperty('speakerInfo')) {
-    //     // console.log(talk.speakerInfo.speakerName);
-    //   } else {
-    //     console.log( talk);
-    //   }
-      
-    // }
 
     const data = await readFile('data.json', 'utf8');
     const fileData = JSON.parse(data);
     const json = JSON.stringify(fileData.concat(newData));
     await writeFile('data.json', json, 'utf8');
-    console.log("Wrote to file!")
-
-    // fs.readFile('data.json', 'utf8', (err, data) => {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     let obj = JSON.parse(data);
-
-    //     json = JSON.stringify(obj.concat(allData));
-    //     fs.writeFile('data.json', json, 'utf8', () => {
-    //       console.log("Wrote to file");
-    //     }); // write it back 
-    //   }
-    // });
+    // console.log("Wrote to file!")
   }
 })();
