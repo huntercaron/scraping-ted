@@ -1,0 +1,32 @@
+aws lambda create-function \
+--region us-east-2 \
+--function-name ProcessDynamoDBStream \
+--zip-file fileb://ProcessDynamoDBStream.zip \
+--role arn:aws:iam::861011464249:role/lambda-dynamodb-execution-role \
+--handler ProcessDynamoDBStream.lambda_handler \
+--runtime nodejs6.10 \
+--profile adminuser
+
+aws lambda invoke \
+--invocation-type RequestResponse \
+--function-name ProcessDynamoDBStream \
+--region us-east-2 \
+--payload file://input.txt \
+--profile adminuser \
+outputfile.txt
+
+
+
+aws lambda create-event-source-mapping \
+--region us-east-2 \
+--function-name ProcessDynamoDBStream \
+--event-source arn:aws:dynamodb:us-east-2:861011464249:table/Ted/stream/2018-04-02T03:18:59.072 \
+--batch-size 100 \
+--starting-position TRIM_HORIZON \
+--profile adminuser
+
+aws lambda list-event-source-mappings \
+--region us-east-1 \
+--function-name ProcessDynamoDBStream \
+--event-source arn:aws:dynamodb:us-east-2:861011464249:table/Ted/stream/2018-04-02T03:18:59.072 \
+--profile adminuser

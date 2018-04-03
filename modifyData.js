@@ -14,48 +14,28 @@ const writeFile = promisify(fs.writeFile);
     for (let i in fileData) {
       let talk = fileData[i];
 
-      let newTranscript = [];
+      let transcriptTimes = talk.transcript.map(({ time }) => time);
+      let transcriptText = talk.transcript.map(({ text }) => text);
 
-      for (let line of talk.transcript) {
-        newTranscript.push({
-          time: {
-            S: line.time
-          },
-          text: {
-            S: line.text
-          }
-        })
-      }
 
-      console.log(newTranscript);
-      
+      // for (let line of talk.transcript) {
+      //   newTranscript.push({
+      //     time: {
+      //       S: line.time
+      //     },
+      //     text: {
+      //       S: line.text
+      //     }
+      //   })
+      // }
 
-      let talkObj = { PutRequest: { Item: 
-        {
-          speakerInfo: {
-            speakerLink: {
-              S: talk.speakerInfo.speakerLink
-            }, 
-            speakerName: {
-              S: talk.speakerInfo.speakerName
-            },
-            speakerTitle: {
-              S: talk.speakerInfo.speakerTitle
-            }, 
-            speakerBio: {
-              S: talk.speakerInfo.speakerBio
-            },
-          },
-          transcript: {
-            L: newTranscript
-          },
-          index: {
-            N: talk.index
-          }
-        }
-      }}
-      
-      moddedData.push(talk);
+
+      moddedData.push({
+        index: talk.index,
+        speakerInfo: talk.speakerInfo,
+        transcriptText,
+        transcriptTimes
+      });
 
       if (i > 4) {
         break;
