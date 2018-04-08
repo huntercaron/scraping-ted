@@ -27,6 +27,15 @@ async function scrapeTed(index, browser) {
     }, speakerSelector)
 
 
+    const talkInfoSelector = "#content";
+
+    const talkTitle = await page.evaluate(talkInfoSelector => {
+      const talkInfoNode = document.querySelector(talkInfoSelector );
+      return talkInfoNode.firstChild.children[1].children[1].lastChild.textContent
+      
+    }, talkInfoSelector)
+
+
     const transcriptSelector = '.Grid .Grid--with-gutter';
     await page.goto(url + "/transcript")
     await page.waitForSelector(transcriptSelector)
@@ -34,10 +43,13 @@ async function scrapeTed(index, browser) {
     const talk = {
       index: index,
       speakerInfo: speakerInfo,
+      talkTitle: talkTitle,
+      url: url,
       transcript: [],
     }
 
     
+
     const links = await page.evaluate(transcriptSelector => {
       const anchors = Array.from(document.querySelectorAll(transcriptSelector));
       return anchors.map(anchor => {
@@ -78,14 +90,14 @@ async function scrapeMultiple(startIndex, browser) {
   return new Promise(resolve => { resolve(allData) })
 }
 
-
+// 2898
 
 (async () => {
-  for (let i = 1; i <= 2898; i+=scrapeSize) {
+  for (let i = 1; i <= 5; i+=scrapeSize) {
     const browser = await puppeteer.launch({
       executablePath: '../Chrome/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
       timeout: 100000,
-      args: ['--disable-timeouts-for-profiling']
+      args: ['--disable-timeouts-for-profiling'],
     });
 
     // console.log("hey")
