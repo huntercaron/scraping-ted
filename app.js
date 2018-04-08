@@ -93,7 +93,7 @@ async function scrapeMultiple(startIndex, browser) {
 // 2898
 
 (async () => {
-  for (let i = 1; i <= 5; i+=scrapeSize) {
+  for (let i = 1; i <= 2898; i+=scrapeSize) {
     const browser = await puppeteer.launch({
       executablePath: '../Chrome/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
       timeout: 100000,
